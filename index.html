@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Руны: смысл и совет</title>
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 16px;
+    }
+    h1 { margin: 0 0 8px; font-size: 24px; line-height: 1.2; }
+    .subtitle { color: var(--muted); margin-bottom: 24px; text-align: center; max-width: 480px; }
+    .controls {
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 24px;
+    }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; margin-bottom: 6px; color: var(--text); font-size: 14px; font-weight: 500; }
+    select, button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      border: 1px solid var(--border);
+    }
+    select { background: var(--card); color: var(--text); }
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    button:hover { opacity: 0.9; }
+    button:active { transform: scale(0.98); }
+    #result { display: none; animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .card {
+      background: var(--card);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+    .symbol { font-size: 72px; line-height: 1; margin: 8px 0; letter-spacing: 2px; }
+    .name { font-weight: 700; color: var(--accent); margin: 4px 0; font-size: 20px; }
+    .meaning { color: var(--muted); margin: 8px 0; line-height: 1.4; }
+    .advice {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #eff6ff;
+      border-radius: 8px;
+      color: #1e3a8a;
+      border-left: 4px solid var(--accent);
+      line-height: 1.4;
+    }
+    .actions { margin-top: 16px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-icon {
+      padding: 10px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+    .disclaimer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Руны</h1>
+  <p class="subtitle">Символические советы и смыслы. Не является гаданием или предсказанием.</p>
+
+  <div class="controls">
+    <div class="form-group">
+      <label for="setSelect">Набор рун</label>
+      <select id="setSelect" aria-label="Выберите набор рун">
+        <option value="futhark">Старший Футарк (классика)</option>
+        <option value="nortumbrian">Нортумбрийский ряд</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="intentSelect">Для чего вам руна?</label>
+      <select id="intentSelect" aria-label="Цель получения руны">
+        <option value="day">Совет на день</option>
+        <option value="question">Ответ на вопрос</option>
+        <option value="challenge">Что делать в сложной ситуации</option>
+      </select>
+    </div>
+
+    <button id="drawBtn" type="button" aria-label="Получить руну">Получить руну</button>
+  </div>
+
+  <div id="result" class="card" role="region" aria-live="polite">
+    <div class="symbol" id="rSymbol" aria-hidden="true">ᚠ</div>
+    <div class="name" id="rName">Fehu</div>
+    <div class="meaning" id="rMeaning">Богатство, энергия, начало.</div>
+    <div class="advice" id="rAdvice">Совет: используйте открывающиеся возможности — сейчас время действовать.</div>
+
+    <div class="actions">
+      <button class="btn-icon" type="button" onclick="saveResult()">💾 Сохранить</button>
+      <button class="btn-icon" type="button" onclick="shareResult()">📤 Поделиться</button>
+    </div>
+  </div>
+
+  <p class="disclaimer">Приложение носит развлекательный и образовательный характер. Не является рекомендацией или предсказанием.</p>
+
+  <script>
+    'use strict';
+
+    const runesData = {
+      futhark: [
+        { symbol: 'ᚠ', name: 'Fehu', base: 'Богатство, энергия, начало.', advice: { day: 'Сегодня благоприятно для новых начинаний и финансовых шагов.', question: 'Ответ: да, если вы готовы действовать.', challenge: 'Сосредоточьтесь на ресурсах: что у вас уже есть?' } },
+        { symbol: 'ᚢ', name: 'Uruz', base: 'Сила, выносливость, перемены.', advice: { day: 'День потребует усилий, но принесёт рост.', question: 'Ответ: перемены неизбежны, примите их.', challenge: 'Используйте внутреннюю силу, не бойтесь менять подход.' } },
+        { symbol: 'ᚦ', name: 'Thurisaz', base: 'Защита, конфликт, толчок к росту.', advice: { day: 'Будьте внимательны к границам и защите своих интересов.', question: 'Ответ: возможна задержка, нужна осторожность.', challenge: 'Конфликт — это точка роста, не избегайте его.' } },
+        { symbol: 'ᚫ', name: 'Ansuz', base: 'Мудрость, вдохновение, слово.', advice: { day: 'Хороший день для обучения и общения.', question: 'Ответ: прислушайтесь к советам и знакам.', challenge: 'Ищите решение через диалог и понимание.' } },
+        { symbol: 'ᚱ', name: 'Raido', base: 'Путь, движение, путешествие.', advice: { day: 'Планируйте маршрут и шаги вперёд.', question: 'Ответ: движение — ключ, не стойте на месте.', challenge: 'Смените направление, если старое не работает.' } },
+      ],
+      nortumbrian: [
+        { symbol: 'ᚩ', name: 'Os', base: 'Слово, голос, вдохновение.', advice: { day: 'Говорите и пишите: сейчас слово имеет силу.', question: 'Ответ: ищите решение в общении.', challenge: 'Выразите свою позицию ясно и спокойно.' } },
+        { symbol: 'ᚣ', name: 'Yr', base: 'Лук, защита, точность.', advice: { day: 'Действуйте точно, не распыляйтесь.', question: 'Ответ: нужна выдержка и терпение.', challenge: 'Держите фокус на главном, не поддавайтесь панике.' } },
+      ]
+    };
+
+    let history = JSON.parse(localStorage.getItem('runesHistory')) || [];
+
+    function getRandomItem(arr) {
+      if (!Array.isArray(arr) || arr.length === 0) {
+        console.error('Нет доступных рун');
+        return null;
+      }
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function updateResult(rune, intent) {
+      const elSymbol = document.getElementById('rSymbol');
+      const elName = document.getElementById('rName');
+      const elMeaning = document.getElementById('rMeaning');
+      const elAdvice = document.getElementById('rAdvice');
+
+      elSymbol.textContent = rune.symbol;
+      elName.textContent = rune.name;
+      elMeaning.textContent = rune.base;
+      elAdvice.textContent = rune.advice[intent] || 'Совет временно недоступен.';
+
+      const resultEl = document.getElementById('result');
+      resultEl.style.display = 'block';
+      // Плавная прокрутка к результату
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('drawBtn').addEventListener('click', () => {
+      const setKey = document.getElementById('setSelect').value;
+      const intent = document.getElementById('intentSelect').value;
+
+      const runes = runesData[setKey];
+      const rune = getRandomItem(runes);
+
+      if (rune) {
+        updateResult(rune, intent);
+      } else {
+        alert('Ошибка: не удалось получить руну. Попробуйте ещё раз.');
+      }
+    });
+
+    function saveResult() {
+      const result = {
+        symbol: document.getElementById('rSymbol').textContent,
+        name: document.getElementById('rName').textContent,
+        meaning: document.getElementById('rMeaning').textContent,
+        advice: document.getElementById('rAdvice').textContent,
+        date: new Date().toLocaleString('ru-RU'),
+      };
+      history.push(result);
+      localStorage.setItem('runesHistory', JSON.stringify(history));
+      alert('Руна сохранена в истории.');
+    }
+
+    function shareResult() {
+      const name = document.getElementById('rName').textContent;
+      const meaning = document.getElementById('rMeaning').textContent;
+      const advice = document.getElementById('rAdvice').textContent;
+
+      const text = `Руна дня: ${name}\n${meaning}\nСовет: ${advice}`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: 'Руна дня',
+          text: text,
+        })
+        .catch(err => {
+          console.error('Ошибка шаринга:', err);
+          fallbackCopyToClipboard(text);
+        });
+      } else {
+        fallbackCopyToClipboard(text);
+      }
+    }
+
+    function fallbackCopyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(
+        () => alert('Скопировано в буфер обмена!'),
+        () => {
+          // Фоллбэк для старых браузеров
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+            document.execCommand('copy');
+            alert('Скопировано в буфер обмена!');
+          } catch (err) {
+            console.error('Не удалось скопировать текст', err);
+            alert('Не удалось скопировать. Используйте ручной ввод.');
+          }
+          document.body.removeChild(textarea);
+        }
+      );
+    }
+  </script>
+</body>
+</html>
