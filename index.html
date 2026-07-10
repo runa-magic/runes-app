@@ -2,39 +2,56 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Руны: смысл и совет</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Руны: совет от рунолога</title>
   <style>
     :root {
-      --bg: #f0f2f5;
-      --card: #ffffff;
-      --accent: #2563eb;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --danger: #dc2626;
+      --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      --card-bg: #ffffff;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent-orange: #f97316;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
     }
     * { box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
+      background: var(--bg-gradient);
       color: var(--text);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
       margin: 0;
-      padding: 16px;
+      padding: 20px;
     }
-    h1 { margin: 0 0 8px; font-size: 24px; line-height: 1.2; }
-    .subtitle { color: var(--muted); margin-bottom: 24px; text-align: center; max-width: 480px; }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .subtitle {
+      color: var(--muted);
+      text-align: center;
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
     .controls {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       margin-bottom: 24px;
     }
     .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 6px; color: var(--text); font-size: 14px; font-weight: 500; }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+    }
     select, button {
       width: 100%;
       padding: 14px;
@@ -42,64 +59,122 @@
       font-size: 16px;
       border: 1px solid var(--border);
     }
-    select { background: var(--card); color: var(--text); }
+    select {
+      background: var(--card-bg);
+      color: var(--text);
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px 16px;
+      padding-right: 40px;
+    }
     button {
-      background: var(--accent);
+      background: var(--primary);
       color: #fff;
       border: none;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
     }
-    button:hover { opacity: 0.9; }
-    button:active { transform: scale(0.98); }
-    #result { display: none; animation: fadeIn 0.3s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .card {
-      background: var(--card);
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      text-align: center;
-      max-width: 400px;
+    button:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+    button:active { transform: translateY(0); }
+
+    #result {
+      display: none;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: popIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
       width: 100%;
+      max-width: 420px;
     }
-    .symbol { font-size: 72px; line-height: 1; margin: 8px 0; letter-spacing: 2px; }
-    .name { font-weight: 700; color: var(--accent); margin: 4px 0; font-size: 20px; }
-    .meaning { color: var(--muted); margin: 8px 0; line-height: 1.4; }
-    .advice {
-      margin-top: 16px;
-      padding: 12px 16px;
-      background: #eff6ff;
-      border-radius: 8px;
-      color: #1e3a8a;
-      border-left: 4px solid var(--accent);
-      line-height: 1.4;
+    @keyframes popIn {
+      to { opacity: 1; transform: translateY(0); }
     }
-    .actions { margin-top: 16px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    .card {
+      background: var(--card-bg);
+      padding: 28px;
+      border-radius: 20px;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.08);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(229, 231, 235, 0.6);
+    }
+    .symbol {
+      font-size: 88px;
+      line-height: 1;
+      margin: 8px 0;
+      letter-spacing: 2px;
+      color: var(--accent-orange);
+      filter: drop-shadow(0 4px 6px rgba(249, 115, 22, 0.25));
+    }
+    .name {
+      font-weight: 700;
+      color: var(--primary);
+      margin: 4px 0;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .meaning {
+      color: var(--muted);
+      margin: 12px 0;
+      line-height: 1.5;
+      font-size: 15px;
+    }
+    .advice-block {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      border-left: 5px solid var(--primary);
+      color: #1f2937;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
     .btn-icon {
-      padding: 10px 14px;
-      background: var(--card);
+      padding: 10px 16px;
+      background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
       color: var(--text);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn-icon:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #eff6ff;
     }
     .disclaimer {
-      margin-top: 24px;
+      margin-top: 32px;
       font-size: 12px;
       color: var(--muted);
       text-align: center;
-      max-width: 400px;
+      max-width: 500px;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
   <h1>Руны</h1>
-  <p class="subtitle">Символические советы и смыслы. Не является гаданием или предсказанием.</p>
+  <p class="subtitle">Совет, как будто его дал настоящий рунолог. Не является гаданием или предсказанием.</p>
 
   <div class="controls">
     <div class="form-group">
@@ -111,22 +186,25 @@
     </div>
 
     <div class="form-group">
-      <label for="intentSelect">Для чего вам руна?</label>
-      <select id="intentSelect" aria-label="Цель получения руны">
+      <label for="intentSelect">Что хочешь узнать?</label>
+      <select id="intentSelect" aria-label="Цель запроса">
         <option value="day">Совет на день</option>
         <option value="question">Ответ на вопрос</option>
         <option value="challenge">Что делать в сложной ситуации</option>
       </select>
     </div>
 
-    <button id="drawBtn" type="button" aria-label="Получить руну">Получить руну</button>
+    <button id="drawBtn" type="button" aria-label="Получить руну">Получить совет рунолога</button>
   </div>
 
   <div id="result" class="card" role="region" aria-live="polite">
     <div class="symbol" id="rSymbol" aria-hidden="true">ᚠ</div>
     <div class="name" id="rName">Fehu</div>
     <div class="meaning" id="rMeaning">Богатство, энергия, начало.</div>
-    <div class="advice" id="rAdvice">Совет: используйте открывающиеся возможности — сейчас время действовать.</div>
+
+    <div class="advice-block" id="rAdvice">
+      Совет: используйте открывающиеся возможности — сейчас время действовать.
+    </div>
 
     <div class="actions">
       <button class="btn-icon" type="button" onclick="saveResult()">💾 Сохранить</button>
@@ -134,22 +212,73 @@
     </div>
   </div>
 
-  <p class="disclaimer">Приложение носит развлекательный и образовательный характер. Не является рекомендацией или предсказанием.</p>
+  <p class="disclaimer">
+    Приложение носит развлекательный и образовательный характер. Трактовки — символические советы, не являются рекомендацией или предсказанием.
+  </p>
 
   <script>
     'use strict';
 
     const runesData = {
       futhark: [
-        { symbol: 'ᚠ', name: 'Fehu', base: 'Богатство, энергия, начало.', advice: { day: 'Сегодня благоприятно для новых начинаний и финансовых шагов.', question: 'Ответ: да, если вы готовы действовать.', challenge: 'Сосредоточьтесь на ресурсах: что у вас уже есть?' } },
-        { symbol: 'ᚢ', name: 'Uruz', base: 'Сила, выносливость, перемены.', advice: { day: 'День потребует усилий, но принесёт рост.', question: 'Ответ: перемены неизбежны, примите их.', challenge: 'Используйте внутреннюю силу, не бойтесь менять подход.' } },
-        { symbol: 'ᚦ', name: 'Thurisaz', base: 'Защита, конфликт, толчок к росту.', advice: { day: 'Будьте внимательны к границам и защите своих интересов.', question: 'Ответ: возможна задержка, нужна осторожность.', challenge: 'Конфликт — это точка роста, не избегайте его.' } },
-        { symbol: 'ᚫ', name: 'Ansuz', base: 'Мудрость, вдохновение, слово.', advice: { day: 'Хороший день для обучения и общения.', question: 'Ответ: прислушайтесь к советам и знакам.', challenge: 'Ищите решение через диалог и понимание.' } },
-        { symbol: 'ᚱ', name: 'Raido', base: 'Путь, движение, путешествие.', advice: { day: 'Планируйте маршрут и шаги вперёд.', question: 'Ответ: движение — ключ, не стойте на месте.', challenge: 'Смените направление, если старое не работает.' } },
+        {
+          symbol: 'ᚠ', name: 'Fehu', base: 'Богатство, энергия, начало.',
+          advice: {
+            day: 'Сегодня день возможностей. Руна Fehu словно шепчет: «Не жди идеального момента — он уже здесь». Если есть идея, которую ты откладывал — начни хотя бы с малого шага. Деньги и ресурсы приходят к тем, кто действует, а не ждёт знака свыше.',
+            question: 'Ответ: скорее да, чем нет. Но успех зависит от твоей готовности вложить силы и время. Fehu — про движение и обмен: ты что-то отдаёшь (труд, внимание, деньги) — и получаешь взамен. Если вопрос про финансы — смотри на реальные шаги, а не на надежду «само придёт».',
+            challenge: 'Когда всё кажется шатким, Fehu напоминает: у тебя уже есть база. Пересчитай свои ресурсы — не только деньги, но и навыки, связи, опыт. Сейчас не время для больших рисков, но можно сделать один уверенный шаг вперёд. Иногда «богатство» — это просто ясность: что ты точно можешь сделать сегодня.'
+          }
+        },
+        {
+          symbol: 'ᚢ', name: 'Uruz', base: 'Сила, выносливость, перемены.',
+          advice: {
+            day: 'День потребует усилий, но принесёт рост. Uruz — это дикий бык: энергия мощная, но её нужно направить. Не распыляйся на мелочи — выбери одну главную задачу и вложи в неё максимум. Сегодня сила в дисциплине, а не в количестве дел.',
+            question: 'Ответ: перемены неизбежны. Даже если ты просишь «оставить всё как есть», Uruz говорит: процесс уже запущен. Лучше спросить не «можно ли?», а «как пройти это легче?». Прими движение — и используй его силу в свою пользу.',
+            challenge: 'В сложной ситуации Uruz советует: не борись с обстоятельствами в лоб, а используй их инерцию. Если чувствуешь, что «всё рушится» — возможно, это просто ломается старое, чтобы освободить место новому. Собери волю в кулак и сделай то, что зависит от тебя, даже если страшно.'
+          }
+        },
+        {
+          symbol: 'ᚦ', name: 'Thurisaz', base: 'Защита, конфликт, толчок к росту.',
+          advice: {
+            day: 'Будь внимателен к границам и защите своих интересов. Thurisaz — как шип: он может ранить, но и защищает. Сегодня лучше не торопиться с решениями — сначала оцени риски. Если назревает спор, постарайся не реагировать на эмоции: спроси себя, что именно ты хочешь защитить.',
+            question: 'Ответ: возможна задержка или препятствие. Thurisaz предупреждает: не всё так просто, как кажется. Это не «нет», а «осторожно». Проверь факты, перечитай договор, уточни детали — сейчас цена ошибки выше обычного.',
+            challenge: 'Конфликт — это точка роста, а не тупик. Thurisaz не советует «проглотить обиду», но и не толкает в драку. Попробуй перевести напряжение в действие: чётко обозначь границы, сформулируй требования, попроси помощи у того, кто умеет разруливать споры. Иногда лучший способ пройти через «шип» — обойти его стороной.'
+          }
+        },
+        {
+          symbol: 'ᚫ', name: 'Ansuz', base: 'Мудрость, вдохновение, слово.',
+          advice: {
+            day: 'Хороший день для обучения и общения. Ansuz — это голос богов: слушай и говори осознанно. Если планируешь важный разговор — подготовь мысли заранее. Сегодня слово имеет вес: одно правильное сообщение может изменить ситуацию.',
+            question: 'Ответ: ищи ответ в знаках и советах. Возможно, нужная информация уже рядом — в письме, случайной фразе, статье. Доверься интуиции, но не игнорируй факты. Если вопрос о выборе — спроси мнение того, кому доверяешь.',
+            challenge: 'Решение придёт через диалог и понимание. Не пытайся «вычислить» всё в одиночку. Поговори с тем, кто видит ситуацию иначе. Иногда проблема решается не действием, а правильной формулировкой: когда ты называешь вещи своими именами, напряжение уходит.'
+          }
+        },
+        {
+          symbol: 'ᚱ', name: 'Raido', base: 'Путь, движение, путешествие.',
+          advice: {
+            day: 'Планируй маршрут и шаги вперёд. Raido — это дорога: даже если ты не знаешь всей картины, двигайся по первому понятному отрезку. Сегодня важно не «куда», а «как»: составь план из маленьких шагов и следуй ему.',
+            question: 'Ответ: движение — ключ. Если ты спрашиваешь «стоит ли ехать/начинать/менять», Raido склоняется к «да», но с условием: будь готов к изменениям по ходу дела. Это не гарантия лёгкого пути, а знак, что движение необходимо.',
+            challenge: 'Если стоишь на месте из‑за страха ошибиться — вспомни: любая дорога начинается с первого шага. Raido не обещает, что будет легко, но обещает, что ты будешь ближе к цели. Раздели большую проблему на этапы и пройди первый из них — дальше станет понятнее.'
+          }
+        }
       ],
       nortumbrian: [
-        { symbol: 'ᚩ', name: 'Os', base: 'Слово, голос, вдохновение.', advice: { day: 'Говорите и пишите: сейчас слово имеет силу.', question: 'Ответ: ищите решение в общении.', challenge: 'Выразите свою позицию ясно и спокойно.' } },
-        { symbol: 'ᚣ', name: 'Yr', base: 'Лук, защита, точность.', advice: { day: 'Действуйте точно, не распыляйтесь.', question: 'Ответ: нужна выдержка и терпение.', challenge: 'Держите фокус на главном, не поддавайтесь панике.' } },
+        {
+          symbol: 'ᚩ', name: 'Os', base: 'Слово, голос, вдохновение.',
+          advice: {
+            day: 'Говори и пиши: сейчас слово имеет особую силу. Os напоминает, что даже короткая фраза может стать началом чего-то большого. Если хочешь что-то изменить — начни с разговора. Сегодня хорошо формулировать цели словами: запиши, озвучь, поделись.',
+            question: 'Ответ: решение придёт через общение. Возможно, ты получишь важное сообщение или сам скажешь нужные слова. Доверяй не только логике, но и тому, как звучит твоя мысль вслух. Если сомневаешься — проговори варианты с кем-то, кто не вовлечён в ситуацию.',
+            challenge: 'Вырази свою позицию ясно и спокойно. Os помогает облечь смутные чувства в слова. Напиши черновик письма, даже если не будешь его отправлять — это прояснит мысли. Иногда самое сильное действие — это правильно названная проблема.'
+          }
+        },
+        {
+          symbol: 'ᚣ', name: 'Yr', base: 'Лук, защита, точность.',
+          advice: {
+            day: 'Действуй точно, не распыляйся. Yr — это лук: чем лучше ты прицелишься, тем вернее будет выстрел. Сегодня лучше сделать одно дело идеально, чем десять кое‑как. Сфокусируйся на главном и не поддавайся на отвлекающие мелочи.',
+            question: 'Ответ: нужна выдержка и терпение. Yr не любит спешки: результат зависит от точности, а не от скорости. Если вопрос про сроки — готовься к тому, что придётся подождать и доработать детали.',
+            challenge: 'Держи фокус на главном, не поддавайся панике. Yr советует: выбери одну цель и работай над ней, пока не добьёшься ясности. Иногда лучшее, что можно сделать в хаосе — это остановиться, прицелиться и выстрелить один раз, но точно.'
+          }
+        }
       ]
     };
 
@@ -163,91 +292,4 @@
       return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    function updateResult(rune, intent) {
-      const elSymbol = document.getElementById('rSymbol');
-      const elName = document.getElementById('rName');
-      const elMeaning = document.getElementById('rMeaning');
-      const elAdvice = document.getElementById('rAdvice');
-
-      elSymbol.textContent = rune.symbol;
-      elName.textContent = rune.name;
-      elMeaning.textContent = rune.base;
-      elAdvice.textContent = rune.advice[intent] || 'Совет временно недоступен.';
-
-      const resultEl = document.getElementById('result');
-      resultEl.style.display = 'block';
-      // Плавная прокрутка к результату
-      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    document.getElementById('drawBtn').addEventListener('click', () => {
-      const setKey = document.getElementById('setSelect').value;
-      const intent = document.getElementById('intentSelect').value;
-
-      const runes = runesData[setKey];
-      const rune = getRandomItem(runes);
-
-      if (rune) {
-        updateResult(rune, intent);
-      } else {
-        alert('Ошибка: не удалось получить руну. Попробуйте ещё раз.');
-      }
-    });
-
-    function saveResult() {
-      const result = {
-        symbol: document.getElementById('rSymbol').textContent,
-        name: document.getElementById('rName').textContent,
-        meaning: document.getElementById('rMeaning').textContent,
-        advice: document.getElementById('rAdvice').textContent,
-        date: new Date().toLocaleString('ru-RU'),
-      };
-      history.push(result);
-      localStorage.setItem('runesHistory', JSON.stringify(history));
-      alert('Руна сохранена в истории.');
-    }
-
-    function shareResult() {
-      const name = document.getElementById('rName').textContent;
-      const meaning = document.getElementById('rMeaning').textContent;
-      const advice = document.getElementById('rAdvice').textContent;
-
-      const text = `Руна дня: ${name}\n${meaning}\nСовет: ${advice}`;
-
-      if (navigator.share) {
-        navigator.share({
-          title: 'Руна дня',
-          text: text,
-        })
-        .catch(err => {
-          console.error('Ошибка шаринга:', err);
-          fallbackCopyToClipboard(text);
-        });
-      } else {
-        fallbackCopyToClipboard(text);
-      }
-    }
-
-    function fallbackCopyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(
-        () => alert('Скопировано в буфер обмена!'),
-        () => {
-          // Фоллбэк для старых браузеров
-          const textarea = document.createElement('textarea');
-          textarea.value = text;
-          document.body.appendChild(textarea);
-          textarea.select();
-          try {
-            document.execCommand('copy');
-            alert('Скопировано в буфер обмена!');
-          } catch (err) {
-            console.error('Не удалось скопировать текст', err);
-            alert('Не удалось скопировать. Используйте ручной ввод.');
-          }
-          document.body.removeChild(textarea);
-        }
-      );
-    }
-  </script>
-</body>
-</html>
+    function update
